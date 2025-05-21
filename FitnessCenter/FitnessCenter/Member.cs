@@ -7,28 +7,40 @@ namespace FitnessCenter;
  */
 public abstract class Member
 { 
+  //initialize a protected static (must be unique) List of existing Ids.
+  protected static List<int> ExistingIds { get;} = new List<int>();
   
   //Contr
   public Member(string name)
   {
     Random random = new Random();
+    
+    //keep creating a new Id using random.Next(), as long as the Id exists in existing Ids
+    do
+    {
+      Id = random.Next(2147483647);
+      
+    } while (ExistingIds.Contains(Id));
+    
+    //add the Id to the List of Ids
+    ExistingIds.Add(Id);
+    
     Name = name;
     //0 - number randomized
     /*
      * List of Members
      * Check .Contains ID
-     * Go do/while loop to check preexisting memeber IDS
+     * Go do/while loop to check preexisting member IDS
      */
-    Id = random.Next();
   }
 
 
   //Properties
   public int Id { get;}
-  public string Name {get;}
+  public string Name {get; set; }
   
   
 //Methods
-  public abstract void CheckIn(Club club);
+  public abstract void CheckIn(string club);
 
 }

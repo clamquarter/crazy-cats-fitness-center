@@ -10,6 +10,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        //list of Clubs (at least four)
+        //list of Members?
+            //how will we check status at check in?
     }
 }
