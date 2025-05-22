@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace FitnessCenter;
 
 /*
@@ -13,5 +15,27 @@ namespace FitnessCenter;
  */
 public class Club
 {
-    
+    // Fields
+    private string _name;
+    private string _address;
+
+    // Properties 
+    public static List<Member> Members = new List<Member>();
+    // Methods 
+    public static void RemoveMember(Member member)
+    {
+        Members = Members.Where(aMember => aMember.Id == member.Id).ToList();
+    }
+    public static string DisplayMember(Member member)
+    {
+        string displayString = "";
+        if (member is SingleClub)
+        {
+            displayString = $"{member.Name} is a Single club member and joined the {member.ClubName} club";
+        }
+        else if (member is MultiClub) {
+            displayString = $"{member.Name} is a Multi club member and has a total of {member.MemberShipPoints}";
+        }
+        return displayString;
+    }
 }

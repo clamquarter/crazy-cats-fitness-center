@@ -12,7 +12,7 @@ namespace FitnessCenter;
 public class MultiClub: Member
 {
     // Fields
-    public int _memberShipPoints = 0;
+    private int _memberShipPoints = 0;
     // Constructors
     public MultiClub(string name) : base(name)
     {
@@ -23,6 +23,7 @@ public class MultiClub: Member
     public override void CheckIn(string club)
     {
         this._memberShipPoints += 20;
+        this.MemberShipPoints = this._memberShipPoints;
     }
 
 }

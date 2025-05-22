@@ -37,7 +37,7 @@ public abstract class Member
   public int Id { get;}
   public string Name {get; set; }
     public string ClubName { get; set; }
-
+    public int MemberShipPoints { get; set; }
     protected static List<int> ExistingIds { get; } = new List<int>();
 
     //Methods
