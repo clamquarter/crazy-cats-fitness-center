@@ -13,17 +13,17 @@ public class SingleClub: Member
     private string _clubName;
 
     // Constructors
-    public SingleClub(string name, string club) : base(name)
+    public SingleClub(string name, Club club) : base(name)
     {
         Name = name;
-        _clubName = club.ToLower();
+        _clubName = club.Name.ToLower();
         this.ClubName = this._clubName;
     }
     // Methods
-    public override void CheckIn(string club)
+    public override void CheckIn(Club club)
     {
         //check to see if the club name passed is = the club the SCM is assigned to.
-        bool isValid = _clubName.Equals(club.ToLower());
+        bool isValid = _clubName.Equals(club.Name.ToLower());
         //if the member isn't a member of the club name passed in, throw an exception.
          if (!isValid) throw new ArgumentException("You don't even go here!"); 
     }

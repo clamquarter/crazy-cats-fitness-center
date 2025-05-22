@@ -2,8 +2,8 @@ namespace FitnessCenter;
 /*
  * A class to hold basic details about Members (this class should eventually have at least 2
    child classes) and hold the following details at a minimum:
-   ○ id, name
-   ○ an abstract method void CheckIn(Club club)
+   ○ id, name || DONE
+   ○ an abstract method void CheckIn(Club club) || DONE
  */
 public abstract class Member
 { 
@@ -39,8 +39,9 @@ public abstract class Member
     public string ClubName { get; set; }
     public int MemberShipPoints { get; set; }
     protected static List<int> ExistingIds { get; } = new List<int>();
-
+    
     //Methods
-    public abstract void CheckIn(string club);
-
+    public abstract void CheckIn(Club club);
+    
+    //abstract method that adds an access fee
 }

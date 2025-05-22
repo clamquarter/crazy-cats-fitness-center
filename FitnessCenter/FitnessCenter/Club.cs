@@ -4,38 +4,56 @@ namespace FitnessCenter;
 
 /*
  * A Club class that holds basic details about each fitness club, including at minimum:
-   ○    name
-   ○    address
+   ○    name || DONE
+   ○    address || DONE
    ○    anything else you think might be useful
    ● Allow users to:
-   ○      Add members (both kinds), remove members or display member information.
+   ○      Add members (both kinds), remove members or display member information. || DONE
           Check a particular member in at a particular club. (Call the CheckIn method).
           Select a member and generate a bill of fees. Include membership points for
-   Multi-Club Members.
+        Multi-Club Members.
  */
 public class Club
 {
     // Fields
-    private string _name;
     private string _address;
 
-    // Properties 
-    public static List<Member> Members = new List<Member>();
-    // Methods 
-    public static void RemoveMember(Member member)
+    //Constr
+    public Club(string name, string address)
     {
-        Members = Members.Where(aMember => aMember.Id == member.Id).ToList();
+        Name = name;
+        _address = address;
+        const decimal feeAmt = 0.50m;
     }
-    public static string DisplayMember(Member member)
+    
+    // Properties 
+    public List<Member> Members = new List<Member>();
+    public string Name { get; }
+    //default amount for entry fee is zero.
+    public decimal Fee { get; } = 0;
+
+    // Methods 
+    
+    public void AddMember(Member member)
     {
-        string displayString = "";
+        Members.Add(member);
+    }
+    public void RemoveMember(Member member)
+    {
+        Members.Remove(member);
+    }
+    
+    public string DisplayMember(Member member)
+    {
+        string displayString;
         if (member is SingleClub)
         {
-            displayString = $"{member.Name} is a Single club member and joined the {member.ClubName} club";
+            displayString = $"{member.Name} is a Single-club member and joined the {member.ClubName} club.";
         }
-        else if (member is MultiClub) {
-            displayString = $"{member.Name} is a Multi club member and has a total of {member.MemberShipPoints}";
+        else {
+            displayString = $"{member.Name} is a Multi-club member and has a total of {member.MemberShipPoints} points.";
         }
         return displayString;
     }
 }
+
