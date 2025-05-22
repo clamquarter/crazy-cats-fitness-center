@@ -25,7 +25,8 @@ public class SingleClub: Member
         //check to see if the club name passed is = the club the SCM is assigned to.
         bool isValid = _clubName.Equals(club.Name.ToLower());
         //if the member isn't a member of the club name passed in, throw an exception.
-         if (!isValid) throw new ArgumentException("You don't even go here!"); 
+         if (!isValid) throw new ArgumentException("You don't even go here!");
+        this.billableAmount += club.feeAmt;
     }
 
 }

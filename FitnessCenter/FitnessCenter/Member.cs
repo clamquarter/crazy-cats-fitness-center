@@ -38,6 +38,7 @@ public abstract class Member
   public string Name {get; set; }
     public string ClubName { get; set; }
     public int MemberShipPoints { get; set; }
+    protected decimal billableAmount { get; set; } = 0;
     protected static List<int> ExistingIds { get; } = new List<int>();
     
     //Methods

@@ -15,25 +15,23 @@ namespace FitnessCenter;
  */
 public class Club
 {
-    // Fields
-    private string _address;
 
-    //Constr
+    //Constructors
     public Club(string name, string address)
     {
         Name = name;
-        _address = address;
-        const decimal feeAmt = 0.50m;
+        Address = address;
     }
     
     // Properties 
     public List<Member> Members = new List<Member>();
     public string Name { get; }
-    //default amount for entry fee is zero.
-    public decimal Fee { get; } = 0;
+    public string Address { get; }
+    //default amount for entry fee is 50 cents.
+    public decimal feeAmt = 0.50m;
 
     // Methods 
-    
+
     public void AddMember(Member member)
     {
         Members.Add(member);

@@ -22,7 +22,6 @@ class Program
         clubs.Add(laFitness);
         clubs.Add(hourFitness);
         clubs.Add(kianasBasement);
-
         //list of Members?
 
         //how will we check status at check in?
@@ -33,21 +32,89 @@ class Program
 
         //program flow
         //ask the user for their name
-        //ask the user ot choose a membership level (Single or Multi)
-        //if Single, ask the user to choose a club
-        //initialize a SingleClub or MultiClub based on user choice
-        //add the Member to the club they picked
-        //add MultiClub to all clubs available
+        string nameInput;
+        string clubType = "";
+        string possibleClub = "";
+        bool validInput = false;
+        Console.WriteLine("\n Welcome to the Fitness Center\n");
+        Console.Write("What is your Name? ");
+        nameInput = Console.ReadLine();
 
-        //laFitness.CheckIn(india);
-
-        //display available clubs & prices
-        foreach (Club club in clubs)
+        string[] possibleClubs = { "multi club", "multi", "single club", "single" };
+        do
         {
-            Console.WriteLine(club.Name);
+            Console.Write("Do you want to be a Single Club or Multi Club member? ");
+            clubType = Console.ReadLine().Trim().ToLower();
+            validInput = possibleClubs.Contains(clubType);
+            if (!validInput)
+            {
+                Console.WriteLine("Invalid Input. Please enter 'Single', 'Single Club', 'Multi', 'Multi Club'");
+            }
+        } while (!validInput);
+
+        // instead of creating new array we created an array and casted it to a string[]
+        if (((string[]) ["single", "single club"]).Contains(clubType))
+        {
+            do
+            {
+                Console.WriteLine("\nPossible Clubs:");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine($"| {"#",2} | {"Name",-25} | {"Address",-25} |");
+                Console.WriteLine("------------------------------------------------------------");
+
+                // Display club data
+                for (int i = 0; i < clubs.Count; i++)
+                {
+                    Console.WriteLine($"| {i + 1,2} | {clubs[i].Name,-25} | {clubs[i].Address,-25} |");
+                }
+                Console.WriteLine("------------------------------------------------------------");
+
+                Console.Write("Please choose the club type you want to join: ");
+                possibleClub = Console.ReadLine().Trim().ToLower();
+                validInput = clubs.Select(club => club.Name.ToLower()).Contains(possibleClub);
+                if (!validInput)
+                {
+                    int index = -1;
+                    try
+                    {
+                        validInput = Int32.TryParse(possibleClub, out index);
+                        possibleClub = clubs[index - 1].Name;
+                    }
+                    catch (Exception e) {
+                        validInput = false;
+                    }
+                    if (!validInput)
+                    {
+                        Console.WriteLine("Invalid Input. Please choose from one of the existing clubs above.");
+                    }
+                }
+            } while (!validInput);
+            foreach (Club club in clubs)
+            {
+                if (club.Name == possibleClub)
+                {
+                    club.Members.Add(new SingleClub(nameInput,club));
+                }
+            }
+        } else if (new string[] {"multi", "multi club" }.Contains(clubType))
+        {
+            foreach (Club club in clubs)
+            {
+
+                club.Members.Add(new MultiClub(nameInput));
+            }
+            Console.WriteLine("mULTI CLUB ADDED");
         }
 
-        Console.WriteLine($"There are {clubs.Count} clubs available. Would you like to be a single or multi-club member?");
+            //ask the user ot choose a membership level (Single or Multi)
+            //if Single, ask the user to choose a club
+            //initialize a SingleClub or MultiClub based on user choice
+            //add the Member to the club they picked
+            //add MultiClub to all clubs available
+
+            //laFitness.CheckIn(india);
+
+            //display available clubs & prices
        // Console.ReadLine();
        
        // //TEST CODE
