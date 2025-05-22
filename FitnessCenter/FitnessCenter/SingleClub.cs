@@ -8,13 +8,18 @@ namespace FitnessCenter;
 public class SingleClub: Member
 {
     //assign user to club using string
+
+    // Fields
     private string _clubName;
+
+    // Constructors
     public SingleClub(string name, string club) : base(name)
     {
         Name = name;
         _clubName = club.ToLower();
+        this.ClubName = this._clubName;
     }
-
+    // Methods
     public override void CheckIn(string club)
     {
         //check to see if the club name passed is = the club the SCM is assigned to.

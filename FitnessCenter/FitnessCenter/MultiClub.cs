@@ -11,5 +11,18 @@ namespace FitnessCenter;
 
 public class MultiClub: Member
 {
-    
+    // Fields
+    public int _memberShipPoints = 0;
+    // Constructors
+    public MultiClub(string name) : base(name)
+    {
+        Name = name;
+    }
+
+    // Methods
+    public override void CheckIn(string club)
+    {
+        this._memberShipPoints += 20;
+    }
+
 }

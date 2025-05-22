@@ -8,9 +8,8 @@ namespace FitnessCenter;
 public abstract class Member
 { 
   //initialize a protected static (must be unique) List of existing Ids.
-  protected static List<int> ExistingIds { get;} = new List<int>();
   
-  //Contr
+  //Constructors
   public Member(string name)
   {
     Random random = new Random();
@@ -24,7 +23,6 @@ public abstract class Member
     
     //add the Id to the List of Ids
     ExistingIds.Add(Id);
-    
     Name = name;
     //0 - number randomized
     /*
@@ -38,9 +36,11 @@ public abstract class Member
   //Properties
   public int Id { get;}
   public string Name {get; set; }
-  
-  
-//Methods
-  public abstract void CheckIn(string club);
+    public string ClubName { get; set; }
+
+    protected static List<int> ExistingIds { get; } = new List<int>();
+
+    //Methods
+    public abstract void CheckIn(string club);
 
 }
