@@ -103,7 +103,6 @@ class Program
 
                 club.Members.Add(new MultiClub(nameInput));
             }
-            Console.WriteLine("mULTI CLUB ADDED");
         }
 
             //ask the user ot choose a membership level (Single or Multi)
