@@ -26,6 +26,8 @@ public class MultiClub: Member
         this._memberShipPoints += 20;
         //allows DisplayClub to reference the membershipPoints (exclusive to MultiClub members)
         this.MemberShipPoints = this._memberShipPoints;
+        this.BillableAmount += club.feeAmt;
+
     }
 
 }

@@ -38,8 +38,11 @@ public abstract class Member
   public string Name {get; set; }
     public string ClubName { get; set; }
     public int MemberShipPoints { get; set; }
-    protected decimal billableAmount { get; set; } = 0;
+    public decimal BillableAmount { get; set; } = 0;
     protected static List<int> ExistingIds { get; } = new List<int>();
+    
+    public Club MyClub { get; set; }
+
     
     //Methods
     public abstract void CheckIn(Club club);

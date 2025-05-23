@@ -89,6 +89,7 @@ class Program
                     }
                 }
             } while (!validInput);
+            
             foreach (Club club in clubs)
             {
                 if (club.Name == possibleClub)
@@ -105,26 +106,74 @@ class Program
             }
         }
 
-            //ask the user ot choose a membership level (Single or Multi)
-            //if Single, ask the user to choose a club
-            //initialize a SingleClub or MultiClub based on user choice
-            //add the Member to the club they picked
-            //add MultiClub to all clubs available
+        string userSelection;
+        
+        //REFACTOR --
+            //nested do-while loops until user chooses to exit the program.
+                //third option for exit?
+        do
+        {
+            Console.Write("Would you like to check in or view your bill? ");
+            userSelection = Console.ReadLine().Trim().ToLower();
+            validInput = new string[] { "check in", "view bill", "bill" }.Contains(userSelection);
+            if (!validInput)
+            {
+                Console.WriteLine("Invalid Input. Please choose from 'check in' or 'view bill'.");
+            }
+        } while (!validInput);
+        if (userSelection == "check in")
+        {
+                Member member = FindMember(nameInput, clubs);
+                if (member is SingleClub)
+                {
+                  member.CheckIn(member.MyClub);
+                } else 
+                {
+                    do
+                    {
+                        Console.WriteLine("\nPossible Clubs:");
+                        Console.WriteLine("------------------------------------------------------------");
+                        Console.WriteLine($"| {"#",2} | {"Name",-25} | {"Address",-25} |");
+                        Console.WriteLine("------------------------------------------------------------");
 
-            //laFitness.CheckIn(india);
+                        // Display club data
+                        for (int i = 0; i < clubs.Count; i++)
+                        {
+                            Console.WriteLine($"| {i + 1,2} | {clubs[i].Name,-25} | {clubs[i].Address,-25} |");
+                        }
+                        Console.WriteLine("------------------------------------------------------------");
 
-            //display available clubs & prices
-       // Console.ReadLine();
-       
-       // //TEST CODE
-       //  planetFitness.AddMember(india);
-       //  Console.Write($"PF has {planetFitness.Members.Count} members.");
-       //  india.CheckIn(planetFitness);
-       // Console.WriteLine(planetFitness.DisplayMember(india));
-       // Console.WriteLine(planetFitness.DisplayMember(youssef));
-       // planetFitness.RemoveMember(india);
-       // Console.Write($"PF has {planetFitness.Members.Count} members.");
+                        Console.Write("Which club would you like to check in to?");
+                        possibleClub = Console.ReadLine().Trim().ToLower();
+                        validInput = clubs.Select(club => club.Name.ToLower()).Contains(possibleClub);
+                        if (!validInput)
+                        {
+                            int index = -1;
+                            try
+                            {
+                                validInput = Int32.TryParse(possibleClub, out index);
+                                possibleClub = clubs[index - 1].Name;
+                            }
+                            catch (Exception e) {
+                                validInput = false;
+                            }
+                            if (!validInput)
+                            {
+                                Console.WriteLine("Invalid Input. Please choose from one of the existing clubs above.");
+                            }
+                        }
+                    } while (!validInput);
+                    member.CheckIn(clubs.Where(club => club.Name == possibleClub).ToList()[0]);
+                }
 
+        } else if (userSelection == "view bill" || userSelection == "bill")
+        {
+           Console.Write(planetFitness.DisplayMember(FindMember(nameInput, clubs)));
+        }
+        
+      
+        
+        
 
 
 
@@ -144,4 +193,30 @@ class Program
             Console.WriteLine("-----------------------------------------------------------------");
     */
     }
+
+    private static Member FindMember(string name, List<Club> clubs)
+    {
+        Member foundMember = null;
+        bool found = false;
+        foreach (Club club in clubs)
+        {
+            foreach (Member member in club.Members)
+            {
+                if (member.Name == name)
+                {
+                    foundMember = member;
+                    found = true;
+                } 
+            }
+        }
+
+        if (!found)
+        {
+            Console.WriteLine("Frank was displeased.");
+        }
+        return foundMember;
+    }
+    
+    
+    
 }

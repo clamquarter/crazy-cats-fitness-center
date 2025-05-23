@@ -51,6 +51,8 @@ public class Club
         else {
             displayString = $"{member.Name} is a Multi-club member and has a total of {member.MemberShipPoints} points.";
         }
+
+        displayString += $" {member.Name} owes ${member.BillableAmount}.";
         return displayString;
     }
 }

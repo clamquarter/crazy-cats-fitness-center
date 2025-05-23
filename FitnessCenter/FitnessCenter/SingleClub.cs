@@ -18,15 +18,20 @@ public class SingleClub: Member
         Name = name;
         _clubName = club.Name.ToLower();
         this.ClubName = this._clubName;
+        this.MyClub = club;
     }
+    
+    // Properties
+    //public Club MyClub { get; set; }
+    
     // Methods
     public override void CheckIn(Club club)
     {
         //check to see if the club name passed is = the club the SCM is assigned to.
-        bool isValid = _clubName.Equals(club.Name.ToLower());
+        bool isValid = MyClub.Name.ToLower().Equals(club.Name.ToLower());
         //if the member isn't a member of the club name passed in, throw an exception.
          if (!isValid) throw new ArgumentException("You don't even go here!");
-        this.billableAmount += club.feeAmt;
+        this.BillableAmount += club.feeAmt;
     }
 
 }
