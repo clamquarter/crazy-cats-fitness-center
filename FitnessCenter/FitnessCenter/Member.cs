@@ -1,17 +1,11 @@
 namespace FitnessCenter;
-/*
- * A class to hold basic details about Members (this class should eventually have at least 2
-   child classes) and hold the following details at a minimum:
-   ○ id, name || DONE
-   ○ an abstract method void CheckIn(Club club) || DONE
- */
+
 public abstract class Member
 { 
-  //initialize a protected static (must be unique) List of existing Ids.
-  
   //Constructors
   public Member(string name)
   {
+    //using Random() ensures the Id will be unique.
     Random random = new Random();
     
     //keep creating a new Id using random.Next(), as long as the Id exists in existing Ids
@@ -23,16 +17,11 @@ public abstract class Member
     
     //add the Id to the List of Ids
     ExistingIds.Add(Id);
+    
     Name = name;
-    //0 - number randomized
-    /*
-     * List of Members
-     * Check .Contains ID
-     * Go do/while loop to check preexisting member IDS
-     */
+    
   }
-
-
+  
   //Properties
   public int Id { get;}
   public string Name {get; set; }
@@ -42,10 +31,8 @@ public abstract class Member
     protected static List<int> ExistingIds { get; } = new List<int>();
     
     public Club MyClub { get; set; }
-
     
     //Methods
     public abstract void CheckIn(Club club);
     
-    //abstract method that adds an access fee
 }

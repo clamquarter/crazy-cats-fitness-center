@@ -23,14 +23,9 @@ namespace FitnessCenter
             clubs.Add(laFitness);
             clubs.Add(hourFitness);
             clubs.Add(kianasBasement);
-            //list of Members?
 
-            //how will we check status at check in?
-            MultiClub india = new MultiClub("Kiana");
-            SingleClub india2 = new SingleClub("India", kianasBasement);
-            SingleClub youssef = new SingleClub("Youssef", laFitness);
-            //display associated fees (lower fees for different member classes)
-
+            
+            bool running = true;
             string nameInput;
             string clubType = "";
             string possibleClub = "";
@@ -51,127 +46,62 @@ namespace FitnessCenter
             {
                 HandleMultiClub(nameInput,clubs);
             }
-
-            userSelection = CheckOrBill();
-
-            if (userSelection == "check in")
-            {
-                CheckIn(possibleClub, nameInput, clubs);
-            } else if (userSelection == "view bill" || userSelection == "bill")
-            {
-                Console.Write(planetFitness.DisplayMember(FindMember(nameInput, clubs)));
-            } else if (userSelection == "exit")
-            {
-                Console.WriteLine("DO STUFF");
-            }
-        }
-        private static Member FindMember(string name, List<Club> clubs)
-        {
-            Member foundMember = null;
-            bool found = false;
-            foreach (Club club in clubs)
-            {
-                foreach (Member member in club.Members)
-                {
-                    if (member.Name == name)
-                    {
-                        foundMember = member;
-                        found = true;
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                Console.WriteLine("Frank was displeased.");
-            }
-            return foundMember;
-        }
-        private static void HandleSingleClub(string nameInput, string possibleClub, List<Club> clubs)
-        {
-            bool validInput = false;
+            
             do
             {
-                DisplayClubs(clubs);
-                Console.Write("Please choose the club type you want to join: ");
-                possibleClub = Console.ReadLine().Trim().ToLower();
-                validInput = clubs.Select(club => club.Name.ToLower()).Contains(possibleClub);
-                if (!validInput)
+                userSelection = CheckOrBillOrExitValidation();
+                if (userSelection == "check in")
                 {
-                    possibleClub = IsPossibleClub(possibleClub, clubs);
-                    if (possibleClub != "")
-                    {
-                        validInput = true;
-                    }
+                    CheckIn(possibleClub, nameInput, clubs);
                 }
-            } while (!validInput);
-
-            foreach (Club club in clubs)
-            {
-                if (club.Name.ToLower() == possibleClub)
+                else if (userSelection == "view bill" || userSelection == "bill")
                 {
-                    club.Members.Add(new SingleClub(nameInput, club));
+                    Console.WriteLine(planetFitness.DisplayMember(FindMember(nameInput, clubs)));
                 }
-            }
+                else if (userSelection == "exit")
+                {
+                    SayGoodbye();
+                    running = false;
+                }
+            } while (running);
         }
-        private static void HandleMultiClub(string nameInput, List<Club> clubs)
+            
+        //after prompting the user for their name, we ask them which member type they'd like to be.
+            //if SingleClub member, display the list of club options.
+        private static void DisplayClubs(List<Club> clubs)
         {
-            foreach (Club club in clubs)
-            {
+            Console.WriteLine("\nClubs:");
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine($"| {"#",2} | {"Name",-25} | {"Address",-25} |");
+            Console.WriteLine("------------------------------------------------------------");
 
-                club.Members.Add(new MultiClub(nameInput));
+            // Display club data
+            for (int i = 0; i < clubs.Count; i++)
+            {
+                Console.WriteLine($"| {i + 1,2} | {clubs[i].Name,-25} | {clubs[i].Address,-25} |");
             }
+            Console.WriteLine("------------------------------------------------------------");
         }
-        private static string CheckOrBill()
+        
+        //validate member type input provided by user
+        private static string HandleClubType(string[] possibleClubs)
         {
-            string userSelection = "";
             bool validInput = false;
+            string clubType = "";
             do
             {
-                DisplayCheckInOrBillMenu();
-                userSelection = Console.ReadLine().Trim().ToLower();
-                validInput = new string[] { "check in", "view bill", "bill", "exit" }.Contains(userSelection);
+                Console.Write("Do you want to be a Single Club or Multi Club member? ");
+                clubType = Console.ReadLine().Trim().ToLower();
+                validInput = possibleClubs.Contains(clubType);
                 if (!validInput)
                 {
-                    userSelection = IsPossibleCheckInOrBillOrExit(userSelection);
-                    if (!((string[])["check in", "view bill", "exit"]).Contains(userSelection))
-                    {
-                        Console.WriteLine("Invalid Input. Please choose from 'check in', 'exit', or 'view bill'.");
-                    } else
-                    {
-                        validInput = true;
-                    }
+                    Console.WriteLine("Invalid Input. Please enter 'Single', 'Single Club', 'Multi', 'Multi Club'");
                 }
             } while (!validInput);
-            return userSelection;
+            return clubType;
         }
-        private static string IsPossibleCheckInOrBillOrExit(string userSelection)
-        {
-            string theUserSelection = "";
-            bool isValidInput = false;
-            int index = -1;
-            try
-            {
-                isValidInput = Int32.TryParse(userSelection, out index);
-                if (index == 1)
-                {
-                    theUserSelection = "check in";
-                }
-                else if (index == 2)
-                {
-                    theUserSelection = "view bill";
-                }
-                else if (index == 3)
-                {
-                    theUserSelection = "exit";
-                }
-            }
-            catch (Exception e)
-            {
-                isValidInput = false;
-            }
-            return theUserSelection;
-        }
+
+        ///// check in stuff /////
         private static void CheckIn(string possibleClub, string nameInput, List<Club> clubs)
         {
             Member member = FindMember(nameInput, clubs);
@@ -199,6 +129,121 @@ namespace FitnessCenter
                 } while (!validInput);
                 member.CheckIn(clubs.Where(club => club.Name.ToLower() == possibleClub).ToList()[0]);
             }
+            Console.WriteLine("Thanks for checking in!");
+        }
+        private static Member FindMember(string name, List<Club> clubs)
+        {
+            Member foundMember = null;
+            bool found = false;
+            foreach (Club club in clubs)
+            {
+                foreach (Member member in club.Members)
+                {
+                    if (member.Name == name)
+                    {
+                        foundMember = member;
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                Console.WriteLine("Frank was displeased.");
+            }
+            return foundMember;
+        }
+        //validate, create, and add a SingleClub to a Club
+        private static void HandleSingleClub(string nameInput, string possibleClub, List<Club> clubs)
+        {
+            bool validInput = false;
+            do
+            {
+                DisplayClubs(clubs);
+                Console.Write("Please choose the club you want to join: ");
+                possibleClub = Console.ReadLine().Trim().ToLower();
+                validInput = clubs.Select(club => club.Name.ToLower()).Contains(possibleClub);
+                if (!validInput)
+                {
+                    possibleClub = IsPossibleClub(possibleClub, clubs);
+                    if (possibleClub != "")
+                    {
+                        validInput = true;
+                    }
+                }
+            } while (!validInput);
+
+            foreach (Club club in clubs)
+            {
+                if (club.Name.ToLower() == possibleClub)
+                {
+                    club.Members.Add(new SingleClub(nameInput, club));
+                }
+            }
+        }
+        //validate, create, and add a MultiClub to a Club
+        private static void HandleMultiClub(string nameInput, List<Club> clubs)
+        {
+            foreach (Club club in clubs)
+            {
+
+                club.Members.Add(new MultiClub(nameInput));
+            }
+        }
+        ///// check in stuff /////
+
+        //prompt the user to choose to check in, view their bill, or exit the program.
+        private static string CheckOrBillOrExitValidation()
+        {
+            string userSelection = "";
+            bool validInput = false;
+            do
+            {
+                DisplayCheckInOrBillMenu();
+                userSelection = Console.ReadLine().Trim().ToLower();
+                validInput = new string[] { "check in", "view bill", "bill", "exit" }.Contains(userSelection);
+                if (!validInput)
+                {
+                    userSelection = IsPossibleCheckInOrBillOrExit(userSelection);
+                    if (!((string[])["check in", "view bill", "exit"]).Contains(userSelection))
+                    {
+                        Console.WriteLine("Invalid Input. Please choose from 'check in', 'exit', or 'view bill'.");
+                    } else
+                    {
+                        validInput = true;
+                    }
+                }
+            } while (!validInput);
+            return userSelection;
+        }
+        
+        ///// validation stuff /////
+        private static string IsPossibleCheckInOrBillOrExit(string userSelection)
+        {
+            string theUserSelection = "";
+            bool isValidInput = false;
+            int index = -1;
+            try
+            {
+                isValidInput = Int32.TryParse(userSelection, out index);
+                if (index == 1)
+                {
+                    theUserSelection = "check in";
+                }
+                else if (index == 2)
+                {
+                    theUserSelection = "view bill";
+                }
+                else if (index == 3)
+                {
+                    theUserSelection = "exit";
+                }
+            }
+            catch (Exception e)
+            {
+                isValidInput = false;
+            }
+            return theUserSelection;
         }
         private static string IsPossibleClub(string possibleClub, List<Club> clubs)
         {
@@ -220,36 +265,8 @@ namespace FitnessCenter
             }
             return clubName;
         }
-        private static string HandleClubType(string[] possibleClubs)
-        {
-            bool validInput = false;
-            string clubType = "";
-            do
-            {
-                Console.Write("Do you want to be a Single Club or Multi Club member? ");
-                clubType = Console.ReadLine().Trim().ToLower();
-                validInput = possibleClubs.Contains(clubType);
-                if (!validInput)
-                {
-                    Console.WriteLine("Invalid Input. Please enter 'Single', 'Single Club', 'Multi', 'Multi Club'");
-                }
-            } while (!validInput);
-            return clubType;
-        }
-        private static void DisplayClubs(List<Club> clubs)
-        {
-            Console.WriteLine("\nPossible Clubs:");
-            Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine($"| {"#",2} | {"Name",-25} | {"Address",-25} |");
-            Console.WriteLine("------------------------------------------------------------");
+        ///// validation stuff /////
 
-            // Display club data
-            for (int i = 0; i < clubs.Count; i++)
-            {
-                Console.WriteLine($"| {i + 1,2} | {clubs[i].Name,-25} | {clubs[i].Address,-25} |");
-            }
-            Console.WriteLine("------------------------------------------------------------");
-        }
         private static void DisplayCheckInOrBillMenu()
         {
             Console.WriteLine("+----+------------+");
@@ -260,6 +277,21 @@ namespace FitnessCenter
             Console.WriteLine($"| {3,-2} | {"Exit",-10}|");
             Console.WriteLine("+----+------------+");
             Console.Write("Please select from the following options above: ");
+        }
+        //display cute goodbye message.
+        private static void SayGoodbye()
+        {
+            string wave = "👋"; // Waving hand emoji (U+1F44B)
+            string message = "Goodbye! See you soon!";
+
+            Console.OutputEncoding = System.Text.Encoding.UTF8; // Ensure Unicode support
+            // Print large hand (simulated with padding)
+            Console.WriteLine("       " + wave);
+            Console.WriteLine("      " + wave + wave);
+            Console.WriteLine("     " + wave + wave + wave);
+            Console.WriteLine("    " + wave + wave + wave + wave);
+            Console.WriteLine("   " + wave + wave + wave + wave + wave);
+            Console.WriteLine(message);
         }
     }
 }

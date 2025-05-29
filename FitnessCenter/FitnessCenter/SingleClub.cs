@@ -1,14 +1,7 @@
 namespace FitnessCenter;
-/*
- * A child class of Member
- * Single Club Members: a variable that assigns them to a club.
-   The CheckIn method throws an exception if it’s not their club.
- */
 
 public class SingleClub: Member
 {
-    //assign user to club using string
-
     // Fields
     private string _clubName;
 
@@ -22,6 +15,7 @@ public class SingleClub: Member
     }
     
     // Properties
+    //during development, the team mistakenly declared a property in both a child and parent class.
     //public Club MyClub { get; set; }
     
     // Methods
@@ -31,7 +25,7 @@ public class SingleClub: Member
         bool isValid = MyClub.Name.ToLower().Equals(club.Name.ToLower());
         //if the member isn't a member of the club name passed in, throw an exception.
          if (!isValid) throw new ArgumentException("You don't even go here!");
-        this.BillableAmount += club.feeAmt;
+        this.BillableAmount += club.FeeAmt;
     }
 
 }

@@ -1,18 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 namespace FitnessCenter;
-
-/*
- * A Club class that holds basic details about each fitness club, including at minimum:
-   ○    name || DONE
-   ○    address || DONE
-   ○    anything else you think might be useful
-   ● Allow users to:
-   ○      Add members (both kinds), remove members or display member information. || DONE
-          Check a particular member in at a particular club. (Call the CheckIn method).
-          Select a member and generate a bill of fees. Include membership points for
-        Multi-Club Members.
- */
 public class Club
 {
 
@@ -28,10 +16,9 @@ public class Club
     public string Name { get; }
     public string Address { get; }
     //default amount for entry fee is 50 cents.
-    public decimal feeAmt = 0.50m;
+    public decimal FeeAmt = 0.50m;
 
     // Methods 
-
     public void AddMember(Member member)
     {
         Members.Add(member);
